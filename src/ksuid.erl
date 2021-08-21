@@ -1,11 +1,8 @@
 -module(ksuid).
 
-%% API exports
--export([generate/0, parse/1]).
-
--ifdef(TEST).
--export([get_bytes/0]).
--endif.
+-export([ generate/0
+        , generate_binary/0
+        , parse/1 ]).
 
 -define(EPOCH, 1400000000).
 -define(PAYLOAD_LENGTH, 16).
@@ -23,11 +20,15 @@ get_ts() ->
 get_bytes() ->
   crypto:strong_rand_bytes(?PAYLOAD_LENGTH).
 
--spec generate() -> string().
-generate() ->
+-spec generate_binary() -> binary().
+generate_binary() ->
   Timestamp = get_ts(),
   Bytes = get_bytes(),
-  <<KSUIDBin:160/integer>> = <<Timestamp/binary, Bytes/binary>>,
+  <<Timestamp/binary, Bytes/binary>>.
+
+-spec generate() -> string().
+generate() ->
+  <<KSUIDBin:160/integer>> = generate_binary(),
   KSUID62 = base62:encode(KSUIDBin),
   apply_padding(KSUID62).
 
