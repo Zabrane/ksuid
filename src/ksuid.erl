@@ -26,7 +26,7 @@ get_bytes() ->
 -spec generate() -> string().
 generate() ->
   Timestamp = get_ts(),
-  Bytes = ksuid:get_bytes(),
+  Bytes = get_bytes(),
   <<KSUIDBin:160/integer>> = <<Timestamp/binary, Bytes/binary>>,
   KSUID62 = base62:encode(KSUIDBin),
   apply_padding(KSUID62).
