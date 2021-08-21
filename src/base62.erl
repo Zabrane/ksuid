@@ -1,8 +1,8 @@
 -module(base62).
 -export([encode/1, decode/1]).
 
-nthchar(N) when N =< 9 -> $0 + N;
-nthchar(N) when N =< 35 -> $A + N - 10;
+nthchar(N) when N < 10 -> $0 + N;
+nthchar(N) when N < 36 -> $A + N - 10;
 nthchar(N) -> $a + N - 36.
 
 -spec encode(integer()) -> string().
